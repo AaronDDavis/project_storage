@@ -9,22 +9,20 @@
                 {% csrf_token %}
                 {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
-                    <div class="mb-1">
-                        <p>⚠️ Please correct the following errors:</p>
-                    </div>
-                    <div>
-                        {% for error in form.non_field_errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
+                        ⚠️ Please correct the following errors:
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
 
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                {% if field.errors %}
-                                    <p>• **{{ field.label }}**: {{ error }}</p>
-                                {% endif %}
-                            {% endfor %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            {% if field.errors %}
+                                <p>• {{ field.label }}: {{ error }}</p>
+                            {% endif %}
                         {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
                 {% endif %}
                 <div class="mb-3 form-icon-group">
