@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-renter-dashboard" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="card-title">My Spaces</h2>
+        <a href="{% url 'create_installation_request' %}" class="btn btn-accent">
+            <i class="bi bi-plus-circle"></i> New Request
+        </a>
+    </div>
+    
+    <!-- Alerts -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'success' in message.tags %}
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div>{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% elif 'error' in message.tags %}
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div>{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="row" id="renter-spaces-grid">
+        {% if spaces %}
+            {% for space in spaces %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title mb-0">{{space.location.get_area_display}}</h5>
+                            {% if space.status == 'APPROVED' %}
+                            <span class="badge rounded-pill badge-approved fs-6">
+                            {% elif space.status == 'REJECTED' %}
+                            <span class="badge rounded-pill badge-rejected fs-6">
+                            {% elif space.status == 'ON_HOLD' %}
+                            <span class="badge rounded-pill badge-on-hold fs-6">
+                            {% else %}
+                            <span class="badge rounded-pill badge-pending fs-6">
+                            {% endif %}
+                                {{ space.get_status_display }}
+                            </span>
+                        </div>
+                        <p class="card-text">{{space.location.address}}</p>
+                        <hr>
+                        <p class="card-text text-muted">{{space.description}}</p>
+                        <p class="mb-2"><i class="bi bi-cash-coin"></i> {{space.price_per_day}} per shelf per day</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if space.booked_shelves == space.total_shelves %}
+                            <span class="badge fs-6 bg-danger rounded-pill">
+                            
+                            {% else %}
+                            <span class="badge fs-6  bg-primary rounded-pill">
+                            {% endif %}
+                            
+                                {{space.booked_shelves}} / {{space.total_shelves}} Shelves Booked
+                            </span>
+                            <a href="{% url 'space_details' space.id%}" class="btn btn-outline-primary btn-sm">Manage Space</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+        <div class="col-12">
+            <div class="empty-state p-4">
+                <i class="bi bi-house-door"></i>
+                <h5>You haven't listed any spaces</h5>
+                <p class="text-muted mb-0">Click the button below to get started.</p>
+                <a href="{% url 'create_installation_request' %}" class="btn btn-accent mt-3">New Request</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

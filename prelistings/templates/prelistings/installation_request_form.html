@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-create-space" class="page">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            
+            <div class="text-center mb-5">
+                <h1 class="card-title fw-bold">Make a Request for Space</h2>
+                <p class="text-muted">Fill in space details, and we will send a team to install the standard shelving units.</p>
+            </div>
+
+            <form id="create-space-form" method="post">
+                {% csrf_token %}
+                
+                <!-- Section 1: Location -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-primary">
+                        <h4 class="mini-card-title p-3 pb-2">Installation Site Details</h5>
+                    </div>
+                    <div class="card-body p-4">                        
+                        <div class="mb-3">
+                            <label for="location-area" class="form-label">Location Area</label>
+                            <select class="form-select form-select-lg" id="location-area" name="location-area" required>
+                                <option value="" selected disabled>--- Select a Location ---</option>
+                                {% for code, label, _ in LOCATION_CHOICES %}
+                                    <option value="{{ code }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-7">
+                                <label for="location-address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="location-address" name="location-address" placeholder="e.g. Blk 123 Street Name" required>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="environment_conditions" class="form-label">Environment</label>
+                                {{form.environment_conditions}}
+                            </div>
+                        </div>
+
+                        <div class="mb-0">
+                            <label for="description" class="form-label">Description / Instructions</label>
+                            {{form.description}}
+                            <div class="form-text">Mention accessibility (lifts, stairs) or specific restrictions.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Configuration -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-primary">
+                        <h4 class="mini-card-title p-3 pb-2">Shelf Configuration</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="text-muted small mb-4 bg-light p-3 rounded">
+                            <i class="bi bi-info-circle-fill me-1"></i> 
+                            The system standardizes shelf sizes to <strong>0.5m x 0.5m x 0.5m</strong>.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-12 mt-3">
+                                <label for="shelf-price" class="form-label">Estimated Price per Shelf (Daily)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-success">$</span>
+                                    <input type="number" class="form-control text-success" id="shelf-price" step="0.01" min="0" placeholder="Auto-calculated based on location" name="shelf-price" readonly>
+                                </div>
+                                <div class="form-text">Price is automatically set based on the market rate for the selected area.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-accent btn-lg shadow-sm">
+                        Submit Request <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{ LOCATION_PRICES|json_script:"location-prices-data" }}
+
+<script>
+    const priceMapScript = document.getElementById('location-prices-data');
+    const PRICE_MAP = JSON.parse(priceMapScript.textContent);
+</script>
+
+{% endblock %}

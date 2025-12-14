@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-space-details" class="page container-xxl">
+    <div class="row justify-content-center g-4">
+        
+        <!-- LEFT: SPACE DETAILS -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="card-header bg-light border-0">
+                    <h3 class="mb-0 fw-bold text-primary p-2">Storage Space Details</h5>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="ps-3 px-3">
+                    <h4 class="fw-bold text-primary mb-1">{{ space.location.get_area_display }}</h4>
+                    
+                    <p class="text-muted mb-1"><i class="bi bi-thermometer-sun"></i> {{ space.get_environment_conditions_display }}</p>
+                    
+                    <p class="text-muted">{{ space.location.address }}</p>
+                    </div>
+
+                    <hr>
+
+                    <div class="ps-3 px-3">
+                        <h5 class="fw-semibold mb-3 text-dark">Shelf Information</h5>
+                        <div class="mb-2">
+                            <strong>Total Shelves:</strong>
+                            <span class="fs-5 fw-bold text-primary">{{ total_shelves }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Shelf Size:</strong>
+                            <span>{{ shelf_length }} cm × {{ shelf_width }} cm × {{ shelf_height }} cm</span>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Price per Shelf:</strong>
+                            <span class="fw-semibold text-success">${{ space.price_per_day }} / day</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="bg-light p-3">
+                        <h5 class="fw-semibold mb-3 text-dark">Shelf Occupancy Layout</h5>
+
+                        <div class="d-flex align-items-center mb-3 bg-light p-2 rounded">
+                            <div class="d-flex align-items-center me-4">
+                                <div class="shelf-square available me-2"></div>
+                                <span class="small text-muted">Available</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="shelf-square occupied me-2"></div>
+                                <span class="small text-muted">Occupied</span>
+                            </div>
+                        </div>
+
+                        {% for rack in shelf_layout %}
+                            <div class="rack-row mb-2">
+                                <strong class="me-3 text-dark">Rack {{ forloop.counter }}</strong>
+                                {% for shelf in rack %}
+                                    {% if shelf %}
+                                        <div class="shelf-square available" title="Available"></div>
+                                    {% else %}
+                                        <div class="shelf-square occupied" title="Occupied"></div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="card-header bg-light border-0">
+                    <h3 class="mb-0 fw-bold text-primary p-2">Bookings for Space</h5>
+                </div>
+
+                <div class="card-body p-4 md-5">
+                    <div class="ps-3 px-3 h-100 d-flex flex-column">
+
+                    <!-- Modern Segment Tabs -->
+                    <ul class="nav nav-pills mb-4 gap-2" id="bookingTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-sm btn-active-status active"
+                                    id="active-tab" data-bs-toggle="pill" data-bs-target="#active-bookings"
+                                    type="button" role="tab">
+                                <i class="bi bi-calendar-check me-1"></i> Active
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-sm btn-outline-primary"
+                                    id="booked-tab" data-bs-toggle="pill" data-bs-target="#booked-bookings"
+                                    type="button" role="tab">
+                                <i class="bi bi-calendar-event me-1"></i> Booked
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    id="past-tab" data-bs-toggle="pill" data-bs-target="#past-bookings"
+                                    type="button" role="tab">
+                                <i class="bi bi-calendar-x me-1"></i> Past
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content flex-grow-1 bg-light p-3" id="bookingTabsContent">
+                        
+                        <!-- ACTIVE BOOKINGS -->
+                        <div class="tab-pane fade show active" id="active-bookings" role="tabpanel">
+                            {% for booking in active_bookings %}
+                                <div class="card border-0 shadow-sm mb-3 rounded-3">
+                                    <div class="card-body p-3">
+                                        <p class="small text-muted mb-1">
+                                            <strong>Duration:</strong> {{ booking.start_date }} → {{ booking.end_date }}
+                                        </p>
+                                        <p class="small text-muted">
+                                            <strong>
+                                                {{ booking.num_shelves_occupied }}
+                                                {% if booking.num_shelves_occupied > 1 %}
+                                                shelves
+                                                {% else %}
+                                                shelf
+                                                {% endif %}
+                                            </strong>
+                                            &nbsp;·&nbsp;
+                                            <strong>Total:</strong> ${{ booking.total_price }}
+                                        </p>
+                                    <!--
+                                        <a href="{% url 'booking_details' booking.id %}" class="btn btn-sm btn-outline-active-status w-100 mt-2">
+                                            View Details
+                                        </a>
+                                    -->
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state p-4">
+                                    <i class="bi bi-calendar-x"></i>
+                                    <h5>No Active bookings</h5>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- UPCOMING BOOKINGS -->
+                        <div class="tab-pane fade" id="booked-bookings" role="tabpanel">
+                            {% for booking in upcoming_bookings %}
+                                <div class="card border-0 shadow-sm mb-3 rounded-3">
+                                    <div class="card-body p-3">
+                                        <p class="small text-muted mb-1">
+                                            <strong>Starts:</strong> {{ booking.start_date }}
+                                        </p>
+                                        <p class="small text-muted">
+                                            <strong>
+                                                {{ booking.num_shelves_occupied }}
+                                                {% if booking.num_shelves_occupied > 1 %}
+                                                shelves
+                                                {% else %}
+                                                shelf
+                                                {% endif %}
+                                            </strong>
+                                            &nbsp;·&nbsp;
+                                            <strong>Total:</strong> ${{ booking.total_price }}
+                                        </p>
+                                    <!--
+                                        <a href="{% url 'booking_details' booking.id %}" class="btn btn-sm btn-outline-primary w-100 mt-2">
+                                            View Details
+                                        </a>
+                                    -->
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state p-4">
+                                    <i class="bi bi-calendar-x"></i>
+                                    <h5>No Upcoming bookings</h5>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- PAST BOOKINGS -->
+                        <div class="tab-pane fade" id="past-bookings" role="tabpanel">
+                            {% for booking in past_bookings %}
+                                <div class="card border-0 shadow-sm mb-3 rounded-3">
+                                    <div class="card-body p-3">
+                                        <p class="small text-muted mb-1">
+                                            <strong>Completed:</strong> {{ booking.end_date }}
+                                        </p>
+                                        <p class="small text-muted">
+                                            <strong>
+                                                {{ booking.num_shelves_occupied }}
+                                                {% if booking.num_shelves_occupied > 1 %}
+                                                shelves
+                                                {% else %}
+                                                shelf
+                                                {% endif %}
+                                            </strong>
+                                            &nbsp;·&nbsp;
+                                            <strong>Total:</strong> ${{ booking.total_price }}
+                                        </p>
+                                    <!--
+                                        <a href="{% url 'booking_details' booking.id %}" class="btn btn-sm btn-outline-secondary w-100 mt-2">
+                                            View Details
+                                        </a>
+                                    -->
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state p-4">
+                                    <i class="bi bi-calendar-x"></i>
+                                    <h5>No Past bookings</h5>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

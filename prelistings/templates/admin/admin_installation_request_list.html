@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-admin-queue" class="page">
+    
+    <!-- Header Area -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-1 card-title">Installation Request Verification</h2>
+            <p class="text-muted mb-0">Review and manage listing requests.</p>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <span class="badge bg-primary text-light px-3 py-2 fs-6">
+                Total Requests: <strong>{{ installation_requests.count }}</strong>
+            </span>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'success' in message.tags %}
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div>{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% elif 'error' in message.tags %}
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div>{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Filter Bar -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-3">
+            <form method="GET" action="." class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <label for="search-status" class="form-label mb-0 fw-bold me-2">Filter Status:</label>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <select name="search-status" id="search-status" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="" {% if current_status == 'ALL' or not current_status %}selected{% endif %}>Show All</option>
+                        {% for status_value, status_display in request_status.choices %}
+                        <option value="{{ status_value }}" {% if current_status == status_value %}selected{% endif %}>
+                            {{ status_display }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if installation_requests %}
+    <!-- Desktop View (Table) -->
+    <div class="admin-table-container d-none d-md-block bg-white">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Location & ID</th>
+                    <th>Renter</th>
+                    <!-- <th>Capacity</th> -->
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for installation_request in installation_requests %}
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">{{ installation_request.location.get_area_display }}</div>
+                        <div class="text-muted small" style="font-size: 0.75rem;">{{ installation_request.location.address }}</div>
+                        <!--
+                        <div class="text-muted small mt-1">ID: #{{ installation_request.id }}</div>
+                        -->
+                    </td>
+                    <td>
+                        <div class="fw-500">{{ installation_request.renter.get_full_name }}</div>
+                        <div class="text-muted small">{{ installation_request.renter.email }}</div>
+                    </td>
+                    <!--
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-grid-3x3 text-secondary me-2"></i>
+                            {{ installation_request.total_shelves }} Shelves
+                        </div>
+                    </td>
+                    -->
+                    <td class="fw-bold text-success">
+                        ${{ installation_request.price_per_day }}
+                    </td>
+                    <td>
+                        {% if installation_request.status == request_status.APPROVED %}
+                        <span class="badge badge-approved">{{ installation_request.get_status_display }}</span>
+                        {% elif installation_request.status == request_status.REJECTED %}
+                        <span class="badge badge-rejected">{{ installation_request.get_status_display }}</span>
+                        {% elif installation_request.status == request_status.COMPLETED %}
+                        <span class="badge badge-on-hold">{{ installation_request.get_status_display }}</span>
+                        {% elif installation_request.status == request_status.PENDING %}
+                        <span class="badge badge-pending">{{ installation_request.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'admin_installation_request_details' installation_request.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                            Review
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile View (Cards) -->
+    <div class="d-md-none">
+        {% for installation_request in installation_requests %}
+        <div class="card mb-3 card-hover border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">{{installation_request.location.get_area_display}}</h5>
+                        <div class="small text-muted">{{installation_request.location.address}}</div>
+                        <div class="small text-muted">Renter: {{installation_request.renter.get_full_name}}</div>
+                    </div>
+                    
+                    {% if installation_request.status == request_status.APPROVED %}
+                    <span class="badge badge-approved">{{ installation_request.get_status_display }}</span>
+                    {% elif installation_request.status == request_status.REJECTED %}
+                    <span class="badge badge-rejected">{{ installation_request.get_status_display }}</span>
+                    {% elif installation_request.status == request_status.COMPLETED %}
+                    <span class="badge badge-on-hold">{{ installation_request.get_status_display }}</span>
+                    {% elif installation_request.status == request_status.PENDING %}
+                    <span class="badge badge-pending">{{ installation_request.get_status_display }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted d-block">Price</small>
+                        <span class="fw-bold text-success">${{ installation_request.price_per_day }}</span>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block">Capacity</small>
+                        <span class="fw-bold">{{ installation_request.total_shelves }} Shelves</span>
+                    </div>
+                </div>
+
+                <a href="{% url 'admin_installation_request_details' installation_request.id %}" class="btn btn-outline-primary w-100">
+                    Review Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h5>All clear!</h5>
+            <p class="text-muted">There are currently no requests matching this filter.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

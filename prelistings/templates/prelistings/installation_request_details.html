@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-installation_request-details" class="page">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="mb-4">Installation Request Details</h2>
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="col-md-6 bg-light p-4 p-md-5 rounded-start-2">
+                            <h4 class="card-title" id="installation_request-location"> {{installation_request.location.get_area_display}} </h4>
+                            <p class="text-muted" id="installation_request-env"><i class="bi bi-thermometer-sun"></i> {{ installation_request.get_environment_conditions_display }} </p>
+                            <hr>
+                            
+                            <h5 class="mb-3">Shelf Information</h5>
+                            <div class="mb-2">
+                                {% if total_shelves != 0 %}
+                                <strong>Total Shelves:</strong>
+                                <span class="fs-5 fw-bold text-primary" id="shelf-count">{{ total_shelves }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="mb-2">
+                                <strong>Shelf Size:</strong>
+                                <span>{{shelf_length}} cm x {{shelf_width}} cm x {{shelf_height}} cm (Standard)</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Price per Shelf:</strong>
+                                <span id="shelf-price">${{ installation_request.price_per_day}} per day</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 p-4 p-md-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-lessee-dashboard" class="page">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Cancel Successful! {{ message }}
+                
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2 class="mb-4">My Bookings</h2>
+    
+    <h5 class="mb-3">Active Bookings</h5>
+    <div class="list-group mb-4" id="lessee-active-bookings">
+        {% if active_bookings %}
+            {% for booking in active_bookings %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start p-3 js-booking-item bg-white">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-primary">{{booking.rack.space.location.get_area_display}}</h5>
+                    {% if booking.status == active_status %}
+                    <span class="badge bg-success">
+                    {% else %}
+                    <span class="badge bg-primary">
+                    {% endif %}
+                        {{booking.status}}
+                    </span>
+                </div>
+                <p class="mb-1">
+                    <strong>
+                    {{ booking.num_shelves_occupied }}
+                    {% if booking.num_shelves_occupied > 1 %}
+                    Shelves
+                    {% else %}
+                    Shelf
+                    {% endif %}
+                    </strong> from {{booking.start_date}} to {{booking.end_date}}
+                </p>
+                <small>
+                    <strong>Total Price:</strong> ${{booking.total_price}}
+                </small>
+                
+                <div class="mt-3 js-booking-option d-none">
+                    <a href="{% url 'booking_details' booking.id %}" class="btn btn-primary btn-sm me-2">
+                        <i class="bi bi-eye-fill me-1"></i> View Details
+                    </a>
+                    <button type="button" class="btn btn-outline-danger btn-sm" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#cancelBookingModal"
+                            data-bs-booking-id="{{ booking.id }}">
+                        <i class="bi bi-x-circle me-1"></i> Cancel Booking
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state p-4">
+            <i class="bi bi-calendar-x"></i>
+            <h5>No bookings yet</h5>
+            <p class="text-muted mb-0">Find a space and start storing!</p>
+            <a href="{% url 'search_space'%}" class="btn btn-primary mt-3">Find Space</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <h5 class="mb-3">Past Bookings</h5>
+    <div class="list-group" id="lessee-past-bookings">
+        {% if past_bookings %}
+            {% for booking in past_bookings %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start p-3 js-booking-item bg-white">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-primary">{{booking.rack.space.location.get_area_display}}</h5>
+                    {% if booking.status == past_status %}
+                    <span class="badge bg-secondary">
+                    {% else %}
+                    <span class="badge bg-danger">
+                    {% endif %}
+                        {{booking.status}}
+                    </span>
+                </div>
+                <p class="mb-1">
+                    <strong>
+                    {{ booking.num_shelves_occupied}}
+                    {% if booking.num_shelves_occupied > 1 %}
+                    Shelves
+                    {% else %}
+                    Shelf
+                    {% endif %}
+                    </strong> from {{booking.start_date}} to {{booking.end_date}}
+                </p>
+                <small>
+                    <strong>Total Price:</strong> ${{booking.total_price}}
+                </small>
+
+                <div class="mt-3 js-booking-option d-none">
+                    <a href="{% url 'booking_details' booking.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye-fill me-1"></i> View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state p-4">
+            <i class="bi bi-calendar-x"></i>
+            <h5>No bookings yet</h5>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block modals %}
+
+<div class="modal fade" id="cancelBookingModal" tabindex="-1" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="cancel-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="cancelBookingModalLabel">Confirm Cancellation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this booking? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Booking</button>
+                
+                <form action="" id="cancelBookingForm" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="booking_id" id="modalBookingId" value="">
+                    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

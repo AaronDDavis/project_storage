@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-signup" class="page auth-card">
+    <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <h2 class="card-title text-center mb-4">Create Account</h2>
+            <form id="signup-form" method="post">
+                {% csrf_token %}
+                <!--
+                {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <p class="mb-1">⚠️ **Please correct the following errors:**</p>
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            {% if field.errors %}
+                                <p>• **{{ field.label }}**: {{ error }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                -->
+
+                {{ form.non_field_errors }}
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-person-badge form-icon"></i>
+                    <label for="signup-nric" class="form-label">NRIC/FIN Number</label>
+                    {{ form.nric_fin.errors }}
+                    {{ form.nric_fin }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-envelope form-icon"></i>
+                    <label for="signup-email" class="form-label">Email address</label>
+                    {{ form.email.errors }}
+                    {{ form.email }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-person-vcard form-icon"></i>
+                    <label for="signup-first-name" class="form-label">First Name</label>
+                    {{ form.first_name.errors }}
+                    {{ form.first_name }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-person-vcard form-icon"></i>
+                    <label for="signup-last-name" class="form-label">Last Name</label>
+                    {{ form.last_name.errors }}
+                    {{ form.last_name }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-person-vcard form-icon"></i>
+                    <label for="signup-username" class="form-label">Username</label>
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-lock form-icon"></i>
+                    <label for="signup-password1" class="form-label">Password</label>
+                    {{ form.password1.errors }}
+                    {{ form.password1 }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <i class="bi bi-lock form-icon"></i>
+                    <label for="signup-password2" class="form-label">Re-enter Password</label>
+                    {{ form.password2.errors }}
+                    {{ form.password2 }}
+                </div>
+                <div class="mb-3 form-icon-group">
+                    <label for="signup-role" class="form-label">I want to:</label>
+                    {{ form.role.errors }}
+                    {{ form.role }}
+                </div>
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-accent btn-lg">Create Account</button>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'login' %}" class="text-decoration-none">Already have an account? Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-search" class="page">
+    <h2 class="mb-4">Find Storage Space</h2>
+    
+    <!-- Filter Bar -->
+    <div class="card mb-4">
+        <div class="card-body p-4">
+            <form class="row g-3 align-items-end" id="search-form" method="get">
+                <div class="col-lg-3 col-md-6">
+                    <label for="search-location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="search-location" placeholder="e.g. Jurong East" name = 'search-location'>
+                </div>
+                <!-- New Dimension Inputs -->
+                <div class="col-lg-6 col-md-12">
+                    <label class="form-label">Package Dimensions (cm)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                        <input type="number" class="form-control" id="search-length" placeholder="Length" name = 'search-length' required>
+                        <input type="number" class="form-control" id="search-width" placeholder="Width" name =  'search-width' required>
+                        <input type="number" class="form-control" id="search-height" placeholder="Height" name = 'search-height' required>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 d-grid">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Find Space
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Search Results -->
+    {% if available_spaces %}
+    <h4 id="results-heading">Available Spaces</h4>
+    <div class="row" id="space-results-grid">
+
+        {% for space in available_spaces %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shelf-card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{space.location.get_area_display}}</h5>
+                    <p class="card-subtitle mb-2 text-muted">
+                        <i class="bi bi-thermometer-sun"></i> {{space.get_environment_conditions_display }}
+                    </p>
+                    <p class="card-text small">{{space.location.address}}</p>
+                    <p class="card-text small">{{space.description}}</p>
+                    
+                    <div class="mt-auto pt-3">
+                        <div class="mb-3">
+                            <span class="badge bg-primary fs-6">{{space.available_shelves}}</span>
+                            <span class="ms-1">Shelves Available</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="search-list-price-display">${{space.price_per_day}} <span> per shelf per day</span></div>
+                            <a href="{% url 'book_space' space.id space.num_shelves%}" class="btn btn-accent book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Empty State -->
+    {% else %}
+    <div id="empty-state-container">
+        <div class="empty-state">
+            <i class="bi bi-dropbox"></i>
+            <h5>No Spaces Found</h5>
+            <p class="text-muted">We couldn't find any spaces matching your criteria. Try adjusting your dimensions or location.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-renter-dashboard" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="card-title">My Requests</h2>
+        <a href="{% url 'create_installation_request' %}" class="btn btn-accent">
+            <i class="bi bi-plus-circle"></i> New Request
+        </a>
+    </div>
+    
+    <div class="row" id="renter-spaces-grid">
+        {% if installation_requests %}
+            {% for installation_request in installation_requests %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title mb-0">{{installation_request.location.get_area_display}}</h5>
+                            {% if installation_request.status == Status.APPROVED %}
+                            <span class="badge rounded-pill badge-approved fs-6">
+                            {% elif installation_request.status == Status.REJECTED %}
+                            <span class="badge rounded-pill badge-rejected fs-6">
+                            {% elif installation_request.status == Status.COMPLETED %}
+                            <span class="badge rounded-pill badge-on-hold fs-6">
+                            {% else %}
+                            <span class="badge rounded-pill badge-pending fs-6">
+                            {% endif %}
+                                {{ installation_request.get_status_display }}
+                            </span>
+                        </div>
+                        <p class="card-text">{{installation_request.location.address}}</p>
+                        <hr>
+                        <p class="card-text text-muted">{{installation_request.description}}</p>
+                        <p class="mb-2"><i class="bi bi-cash-coin"></i> {{installation_request.price_per_day}} per shelf per day</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if installation_request.status == Status.COMPLETED %}
+                            <a href="{% url 'installation_request_to_space' installation_request.id%}" class="btn btn-accent btn-sm">Convert to Space</a>
+                            {% else %}
+                            <span></span> <!-- Shift manage to right always -->
+                            {% endif %}
+                            <a href="{% url 'installation_request_details' installation_request.id%}" class="btn btn-outline-primary btn-sm">Manage Request</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+        <div class="col-12">
+            <div class="empty-state p-4">
+                <i class="bi bi-house-door"></i>
+                <h5>You haven't made any requests</h5>
+                <p class="text-muted mb-0">Click the button below to get started.</p>
+                <a href="{% url 'create_installation_request' %}" class="btn btn-accent mt-3">New Request</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

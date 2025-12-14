@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-admin-space-details" class="page">
+    <div class="container-fluid px-0">
+        <!-- Back Link -->
+        <a href="{% url 'admin_installation_request_list' %}" class="text-decoration-none text-muted mb-4 d-inline-block hover-primary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Queue
+        </a>
+
+        <div class="row g-4">
+            <!-- Left Column: Actions & Renter Info -->
+            <div class="col-lg-4 order-lg-2">
+                
+                <!-- Status Control Panel -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white border-0 py-3 px-4"> 
+                        <h5 class="mb-0 mini-card-title"><i class="bi bi-shield-check me-2"></i> Verification Actions</h5>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4 p-3 border rounded">
+                            <span class="text-muted small fw-bold">Current Status:</span>
+                            {% if installation_request.status == status.APPROVED or installation_request.status == status.COMPLETED %}
+                            <span class="badge badge-approved py-2 px-3">{{ installation_request.get_status_display }}</span>
+                            {% elif installation_request.status == status.REJECTED %}
+                            <span class="badge badge-rejected py-2 px-3">{{ installation_request.get_status_display }}</span>
+                            {% elif installation_request.status == status.PENDING %}
+                            <span class="badge badge-pending py-2 px-3">{{ installation_request.get_status_display }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <form action="{% url 'update_installation_request_status' installation_request.id status.APPROVED %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="bi bi-check-lg me-2"></i> Approve Request
+                                </button>
+                            </form>
+                            
+                            <form action="{% url 'update_installation_request_status' installation_request.id status.REJECTED %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="bi bi-x-lg me-2"></i> Reject Request
+                                </button>
+                            </form>
+
+                            <form action="{% url 'update_installation_request_status' installation_request.id status.COMPLETED %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-primary w-100">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Renter Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary mini-card-header border-0 mb-2"> 
+                        <h5 class="mini-card-title"><i class="bi bi-person"></i> Renter Info</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <small class="text-muted d-block">Username</small>
+                                <strong>{{ installation_request.renter.get_full_name }}</strong>
+                            </li>
+                            <li class="mb-2">
+                                <small class="text-muted d-block">Username</small>
+                                <strong>{{ installation_request.renter.username }}</strong>
+                            </li>
+                            <li class="mb-2">
+                                <small class="text-muted d-block">Email</small>
+                                <a href="mailto:{{ installation_request.renter.email }}">{{ installation_request.renter.email }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Details -->
+            <div class="col-lg-8 order-lg-1">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header-clean bg-primary border-5 pb-1"> 
+                        <h2 class="mb-4 mini-card-title">Space Details Overview</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <h3 class="fw-bold text-dark">{{ installation_request.location.get_area_display }}</h3>
+                                <p class="text-muted mb-1"><i class="bi bi-geo-alt-fill text-primary"></i> {{ installation_request.location.address }}</p>
+                                <span class="badge bg-light text-dark border"><i class="bi bi-thermometer-half"></i> {{ installation_request.get_environment_conditions_display }}</span>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <div class="price-display text-success">
+                                    ${{ installation_request.price_per_day }}
+                                    <span>/ day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="text-muted opacity-25">
+
+                        <h6 class="fw-bold text-uppercase text-muted small mb-3">Capacity & Layout</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-light rounded text-center">
+                                    <div class="fs-4 fw-bold text-dark">{{ total_shelves }}</div>
+                                    <div class="small text-muted">Total Shelves</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="p-3 bg-light rounded d-flex align-items-center justify-content-center h-100">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-dark">{{ shelf_length }}cm × {{ shelf_width }}cm × {{ shelf_height }}cm</div>
+                                        <div class="small text-muted">Standard Shelf Size</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-light rounded text-center h-100">
+                                    <div class="fs-4 fw-bold text-dark">{{ installation_request.num_rack }}</div>
+                                    <div class="small text-muted">Number of Racks</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-3 bg-light rounded text-center h-100">
+                                    <div class="fs-4 fw-bold text-dark">{{ installation_request.num_shelves_per_rack }}</div>
+                                    <div class="small text-muted">Shelves per Rack</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-sm btn-outline-primary p-3 rounded text-center h-100" data-bs-toggle="modal" data-bs-target="#editShelfDetailsModal">
+                                    <div class="fs-6 fw-bold">Edit Shelf Configuration</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block modals %}
+<div class="modal fade" id="editShelfDetailsModal" tabindex="-1" aria-labelledby="editShelfDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="cancel-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="editShelfDetailsLabel">Edit Shelf Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Please enter following details:</p>
+                <form action="" id="editShelfDetailsForm" method="POST" class="d-inline">
+                    <div class="col-md-12">
+                        <label for="shelf-height-num" class="form-label">Total Racks (Vertical/Rows)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-layers"></i></span>
+                            <input type="number" class="form-control" id="shelf-height-num" step="1" min="1" placeholder="e.g. 3" name="shelf-height-num" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="shelf-length-num" class="form-label">Shelves per Rack (Horizontal)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-arrow-left-right"></i></span>
+                            <input type="number" class="form-control" id="shelf-length-num" step="1" min="1" placeholder="e.g. 5" name="shelf-length-num" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                            {% csrf_token %}
+                            <input type="hidden" name="installation_request_id" id="editShelfDetailsModalId" value="">
+                            <button type="submit" class="btn btn-primary">Save edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

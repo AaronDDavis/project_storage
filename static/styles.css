@@ -1,0 +1,426 @@
+/*
+    PART 2: CUSTOM STYLES
+    Modernized for cleaner UI/UX
+*/
+
+/* -- Color & Font Palette -- */
+:root {
+    /* Primary: Deep Blue */
+    --bs-primary: rgb(0, 90, 156);
+    --bs-primary-rgb: 0, 90, 156;
+    
+    /* Accent: Warm Orange */
+    --bs-accent: #F5A623;
+    --bs-accent-rgb: 245, 166, 35;
+    
+    /* Backgrounds */
+    --bs-light-gray: #f4f7f6; 
+    --bs-light-white: #ffffff;
+
+    /* Semantic Status Colors (Soft) */
+    --status-approved-bg: #d1e7dd;
+    --status-approved-text: #0f5132;
+    --button-approved: #16774a;
+    --status-pending-bg: #e2e3e5;
+    --status-pending-text: #41464b;
+    --status-rejected-bg: #f8d7da;
+    --status-rejected-text: #842029;
+    --status-hold-bg: #fff3cd;
+    --status-hold-text: #664d03;
+
+    --bs-font-sans-serif: 'Inter', sans-serif;
+    --bs-body-font-family: var(--bs-font-sans-serif);
+    --bs-body-bg: var(--bs-light-gray);
+}
+
+body {
+    color: #2c3e50;
+}
+
+/* -- Component Styling -- */
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+    background-color: #ffffff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--bs-primary);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.6rem 1.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: var(--bs-primary);
+}
+
+.btn-accent {
+    background-color: var(--bs-accent);
+    border-color: var(--bs-accent);
+    color: #ffffff;
+}
+.btn-accent:hover {
+    background-color: #e09620;
+    border-color: #e09620;
+    color: #ffffff;
+}
+
+.btn-active-status{
+    border-color: var(--status-approved-text);
+    color: var(--status-approved-text);
+}
+.btn-active-status:hover{
+    background-color: var(--button-approved);
+    color: var(--bs-light-white);
+}
+.btn-active-status.active{
+    background-color: var(--button-approved);
+    color: var(--bs-light-white);
+    border-color: var(--button-approved);
+}
+
+.btn-outline-active-status{
+    border-color: var(--status-approved-text);
+    color: var(--status-approved-text);
+}
+
+/* Shadows for booking list */
+.shadow-active-status{
+    box-shadow: 0 4px 24px var(--status-approved-bg) !important;
+}
+
+.shadow-booked-status{
+    box-shadow: 0 4px 24px rgba(0, 90, 156, 0.25) !important;
+}
+
+.shadow-past-status{
+    box-shadow: 0 4px 24px var(--bs-light-gray) !important;
+}
+
+
+/* Page container */
+.page {
+    display: block;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards (Modernized) */
+.card {
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    background-color: var(--bs-light-white);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+/* Clean Header Style (Replaces bg-primary headers) */
+.card-header-clean {
+    background: transparent;
+    border-bottom: 1px solid #eee;
+    padding: 1.5rem 1.5rem 1rem;
+}
+
+.card-header-clean h5 {
+    font-weight: 700;
+    color: var(--bs-primary);
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-header.bg-primary {
+    border-bottom: none; /* Remove default border */
+}
+
+.mini-card-header{
+    padding-top: 1.2rem;
+    padding-bottom: 0.75rem;
+}
+
+.card-title {
+    color: var(--bs-primary);
+    font-weight: 600;
+}
+
+.mini-card-title {
+    color: var(--bs-light-white);
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Auth forms */
+.auth-card {
+    max-width: 450px;
+    margin: 3rem auto;
+}
+
+/* Form Inputs */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 4px rgba(0, 90, 156, 0.1);
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.4rem;
+}
+
+/* Form inputs with icons */
+.form-icon-group {
+    position: relative;
+}
+.form-icon-group .form-control {
+    padding-left: 2.5rem; /* Make space for the icon */
+}
+.form-icon-group .form-icon {
+    position: absolute;
+    top: 55%;
+    left: 0.9rem;
+    /* transform: translateY(-50%); */
+    color: #adb5bd; /* Muted icon color */
+}
+
+/* Price display */
+.price-display {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--bs-primary);
+    letter-spacing: -0.5px;
+}
+.price-display span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #888;
+}
+
+/* Price display */
+.search-list-price-display {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #343a40;
+}
+.search-list-price-display span {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: #6c757d;
+}
+
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    border: 2px dashed #e9ecef;
+}
+.empty-state i {
+    font-size: 3.5rem;
+    color: #ced4da;
+    display: block;
+    margin-bottom: 1rem;
+}
+.empty-state h5 {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* -- Shelf Layout Visualization -- */
+.rack-container {
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+}
+
+.rack-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.rack-row:last-child {
+    margin-bottom: 0;
+}
+
+.rack-row strong {
+    width: 70px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+}
+
+.shelf-square {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.25rem;
+    margin-right: 0.35rem;
+    margin-bottom: 0.35rem;
+    transition: all 0.2s ease;
+}
+
+.shelf-square.available {
+    background-color: #d1e7dd;
+    border: 1px solid #a3cfbb;
+}
+
+.shelf-square.occupied {
+    background-color: #e2e3e5;
+    border: 1px solid #d3d6d8;
+}
+
+/* -- Badges (Soft Style) -- */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.badge-approved { background-color: var(--status-approved-bg); color: var(--status-approved-text); }
+.badge-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+.badge-rejected { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
+.badge-on-hold { background-color: var(--status-hold-bg); color: var(--status-hold-text); }
+
+/* -- Admin Table -- */
+.admin-table-container {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 2px solid #eee;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: #444;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* -- Alerts -- */
+.alert {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+}
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+
+.space-details-card{
+    background: linear-gradient(135deg, var(--bs-primary), #004a80);
+}
+
+
+/* -- Cancelation Modal Styling -- */
+#cancel-modal-dialog {
+    /* Default: Centered for desktop (Bootstrap's .modal-dialog-centered) */
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 3.5rem);
+}
+
+@media (max-width: 767.98px) {
+    /* Mobile: Snap to bottom (acts as a "bottom sheet") */
+    #cancel-modal-dialog {
+        margin: 0;
+        align-items: flex-end; /* Align to bottom */
+        min-height: 100vh;
+        max-width: 100%; /* Ensure it spans full width */
+    }
+
+    #cancelBookingModal .modal-content {
+        /* Remove mobile border-radius and add top-only */
+        border-radius: 0.75rem 0.75rem 0 0; 
+        animation: slideUp 0.3s ease-out;
+    }
+}
+
+/* Simple slide-up animation for mobile */
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+
+/* Styling the close button to match the overall theme */
+.alert .btn-close {
+    /* Mute the default dark close button for a cleaner look */
+    opacity: 0.7;
+    filter: brightness(0.9); /* Makes the icon color blend better */
+    transition: opacity 0.2s ease;
+}
+
+.alert .btn-close:hover {
+    opacity: 1;
+}
+
+.bg-accent{
+    background-color: var(--bs-accent);
+}
+
+.bg-page{
+    background-color: var(--bs-light-gray);
+}
