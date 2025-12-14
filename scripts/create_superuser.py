@@ -1,7 +1,9 @@
 import os
+import sys
 import django
 
 # Setup Django environment
+sys.path.append(os.getcwd())
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_storage.settings")
 django.setup()
 
