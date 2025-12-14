@@ -4,6 +4,7 @@
 ![Django](https://img.shields.io/badge/Django-5.0-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-Service%20Layer-orange?style=for-the-badge)
 ![Pattern](https://img.shields.io/badge/Pattern-Strategy%20%26%20Composite-blueviolet?style=for-the-badge)
+[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](YOUR_RENDER_APP_URL_HERE)
 
 > **Turning Shared Space into Shared Value**
 
@@ -19,6 +20,8 @@ This repository contains **Version 5** of the application. This version represen
 - **High Testability**
 
 *Note: Version 1 to 4 were internal prototypes and were not published publicly.*
+
+## [🚀 View Live Demo](https://project-storage-app-ybvk.onrender.com/user/login)**
 
 ## 🖼️ Screenshots
 
@@ -117,26 +120,21 @@ Version 5 builds on existing features (Admin Verification, State Machines) by ap
 
 ---
 
-<!--
-## 🎥 Demo Video
-
-> [Watch the Demo](https://www.youtube.com/your-demo-link)
-
----
--->
-
 ## ⚙️ Core Features
 
 ### 🛡️ For Admins (Operational Workflow)
+
 * **Two-Phase Verification:** Renters cannot create phantom spaces. They submit an `InstallationRequest`.
 * **Admin Queue:** Superusers review requests, visualize the shelf layout, and "Install" the space digitally only after physical verification.
 * **Automated Conversion:** Upon approval, the system atomically generates the `Space`, `Rack`, and `Shelf` database objects.
 
 ### 🏠 For Renters
+
 * **Space Visualization:** A color-coded, grid-based view of their racks showing real-time occupancy.
 * **Request Lifecycle:** Track status from `Pending` $\rightarrow$ `Approved` $\rightarrow$ `Live`.
 
 ### 🔍 For Lessees
+
 * **Smart Search:** Filters spaces based on item dimensions (L x W x H) vs. available shelf configurations.
 * **Dynamic Pricing:** Real-time cost calculation based on volume and duration.
 
@@ -213,7 +211,10 @@ The platform uses the **Best-Fit with Compaction** strategy to manage space effi
 | :--- | :--- | :--- | :---|
 | **Backend** | Python & Django | Python 3, Django 5.x | Robust and secure web framework for rapid development. |
 | **Frontend** | Django Templates (HTML), Bootstrap, JS | Bootstrap 5, Vanilla JavaScript | Responsive design with minimal client-side complexity. |
-| **Database** | SQLite | Default (for development only) | Simple, file-based database used for development/testing. |
+| **Database** | PostgreSQL | 14+ | Production Database |
+| **Server** | Gunicorn | 23.x | Production-grade WSGI HTTP Server |
+| **Static Files** | WhiteNoise | 6.x | Efficient static file serving for production |
+| **Infrastructure** | Render (PaaS) | - | Cloud hosting and continuous deployment pipeline |
 | **Architecture** | Service-Oriented | - | MVT + Service Layer Pattern. |
 
 ---
@@ -290,6 +291,18 @@ Version 5 moves the codebase toward a **Service-Oriented Architecture**:
 
 ---
 
+## ☁️ Deployment & DevOps
+
+The application is deployed on **Render** using a continuous deployment pipeline. The setup follows **Twelve-Factor App** methodologies to ensure security and reproducibility:
+
+- **Infrastructure as Code:** Deployment logic is version-controlled via `build.sh`, which automates dependency installation, static file collection, and migrations.
+- **Process Management:** A `Procfile` declares the application's entry point, instructing the cloud provider to serve the app using **Gunicorn** rather than the development server.
+- **Automated Provisioning:** A custom script (`scripts/create_superuser.py`) runs during the build process to auto-provision administrative access, bypassing the need for interactive SSH consoles.
+- **Environment Security:** `SECRET_KEY`, `DEBUG`, and Database credentials are strictly decoupled from the codebase and managed via environment variables (`os.environ`).
+- **Database Switching:** The system uses `dj-database-url` to automatically detect the environment and switch between **SQLite** (local) and **PostgreSQL** (production).
+
+---
+
 ## 💻 How to Run This Project Locally
 
 1. **Clone the repository:**
@@ -314,17 +327,28 @@ Version 5 moves the codebase toward a **Service-Oriented Architecture**:
 3. **Install dependencies:**
 
     ```sh
+    # Installs production + dev requirements
     pip install -r requirements.txt
     ```
 
-4. **Run database migrations:**
+4. **Environment Setup:**
+
+   Create a `.env` file in the root directory (or export these variables in your terminal) to mimic production security:
+
+   ```env
+   DEBUG=True
+   SECRET_KEY=your-local-secret-key
+   DATABASE_URL=sqlite:///db.sqlite3
+   ```
+
+5. **Run database migrations:**
 
     ```sh
     python manage.py makemigrations
     python manage.py migrate
     ```
 
-5. **Create a superuser:**
+6. **Create a superuser:**
 
     ```sh
     python manage.py createsuperuser
@@ -332,13 +356,13 @@ Version 5 moves the codebase toward a **Service-Oriented Architecture**:
 
     *Allows you to access the `/admin` panel.*
 
-6. **Run the development server:**
+7. **Run the development server:**
 
     ```sh
     python manage.py runserver
     ```
 
-7. Open your browser and go to `http://127.0.0.1:8000/user/signup`.
+8. Open your browser and go to `http://127.0.0.1:8000/user/signup`.
 
 ---
 
