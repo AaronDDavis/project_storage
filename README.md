@@ -5,7 +5,7 @@
 ![Architecture](https://img.shields.io/badge/Architecture-Service%20Layer-orange?style=for-the-badge)
 ![Pattern](https://img.shields.io/badge/Pattern-Strategy%20%26%20Composite-blueviolet?style=for-the-badge)
 
-> **Your Space. Their Storage. One Platform.**
+> **Turning Shared Space into Shared Value**
 
 **A decentralized “Uber-for-Storage” platform built with Django, featuring smart space allocation and OOD-driven architecture.**
 
@@ -378,6 +378,6 @@ You’re welcome to use, modify, or build upon this project for learning or non-
 
 ## 📬 Contact
 
-Developed by **[Your Name]**
-Email: [your.email@example.com]
+Developed by **Aaron Davis**
+Email: [aaronddavis001@gmail.com]
 LinkedIn: [linkedin.com/in/yourprofile]
