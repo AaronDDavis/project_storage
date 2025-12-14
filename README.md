@@ -295,7 +295,7 @@ Version 5 moves the codebase toward a **Service-Oriented Architecture**:
 1. **Clone the repository:**
 
     ```sh
-    git clone [https://github.com/USERNAME/project_storage.git](https://github.com/USERNAME/project_storage.git)
+    git clone [https://github.com/AaronDDavis/project_storage.git](https://github.com/AaronDDavis/project_storage.git)
     cd project_storage
     ```
 
@@ -370,7 +370,7 @@ Version 5 moves the codebase toward a **Service-Oriented Architecture**:
 
 ## 🧾 License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 You’re welcome to use, modify, or build upon this project for learning or non-commercial purposes.
 
@@ -379,5 +379,7 @@ You’re welcome to use, modify, or build upon this project for learning or non-
 ## 📬 Contact
 
 Developed by **Aaron Davis**
+
 Email: [aaronddavis001@gmail.com]
-LinkedIn: [linkedin.com/in/yourprofile]
+
+LinkedIn: [linkedin.com/in/aaron-daniel-davis]
