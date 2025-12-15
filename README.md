@@ -450,4 +450,4 @@ Developed by **Aaron Davis**
 
 Email: [aaronddavis001@gmail.com]
 
-LinkedIn: [aaron-daniel-davis](linkedin.com/in/aaron-daniel-davis)
+LinkedIn: [aaron-daniel-davis](https://linkedin.com/in/aaron-daniel-davis)
