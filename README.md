@@ -19,18 +19,14 @@
 - [🖼️ Screenshots](#%EF%B8%8F-screenshots)
    - [🏠 Lessee Dashboard](#-lessee-dashboard)
    - [🔍 Lessee Search and Booking Flow](#-lessee-search-and-booking-flow)
-   - [📊 Renter Space Detail & Visualization](#-renter-space-detail-visualization)
+   - [📊 Renter Space Detail & Visualization](#-renter-space-detail--visualization)
    - [👤 Admin Installation Request Detail Page](#-admin-installation-request-detail-page)
 - [🚀 Version 5: The Engineering Refactor](#-version-5-the-engineering-refactor)
    - [🔍 Key Architectural Changes in v5](#-key-architectural-changes-in-v5)
 - [🗓️ Changelog](#%EF%B8%8F-changelog)
 - [⚙️ Core Features](#%EF%B8%8F-core-features)
-   - [👤 Dual User Roles & Account Management](#-dual-user-roles-account-management)
-   - [🛡️ Admin (Superuser) Features](#%EF%B8%8F-admin-superuser-features)
-   - [🏠 Renter Features](#-renter-features)
-   - [🔍 Lessee Features & Smart Booking](#-lessee-features-smart-booking)
 - [📐 Allocation Strategy: Best-Fit with Compaction](#-allocation-strategy-best-fit-with-compaction)
-- [🛠️ Tech Stack & Requirements](#%EF%B8%8F-tech-stack-requirements)
+- [🛠️ Tech Stack & Requirements](#%EF%B8%8F-tech-stack--requirements)
 - [📁 Project Structure](#-project-structure)
 - [💡 Core Engineering Rationale](#-core-engineering-rationale)
    - [High-Level Architecture: Service-Layer Pattern](#high-level-architecture-service-layer-pattern)
@@ -450,4 +446,4 @@ Developed by **Aaron Davis**
 
 Email: [aaronddavis001@gmail.com]
 
-LinkedIn: [aaron-daniel-davis](https://linkedin.com/in/aaron-daniel-davis)
+LinkedIn: [https://linkedin.com/in/aaron-daniel-davis]
