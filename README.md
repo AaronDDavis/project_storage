@@ -4,11 +4,44 @@
 ![Django](https://img.shields.io/badge/Django-5.0-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-Service%20Layer-orange?style=for-the-badge)
 ![Pattern](https://img.shields.io/badge/Pattern-Strategy%20%26%20Composite-blueviolet?style=for-the-badge)
-[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](YOUR_RENDER_APP_URL_HERE)
+[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://project-storage-app-ybvk.onrender.com/user/login)
 
 > **Turning Shared Space into Shared Value**
 
 **A decentralized “Uber-for-Storage” platform built with Django, featuring smart space allocation and OOD-driven architecture.**
+
+---
+
+## 📖 Table of Contents
+
+- [✨ Overview](#-overview)
+- [🚀 Live Demo](#-live-demo)
+- [🖼️ Screenshots](#%EF%B8%8F-screenshots)
+   - [🏠 Lessee Dashboard](#-lessee-dashboard)
+   - [🔍 Lessee Search and Booking Flow](#-lessee-search-and-booking-flow)
+   - [📊 Renter Space Detail & Visualization](#-renter-space-detail-visualization)
+   - [👤 Admin Installation Request Detail Page](#-admin-installation-request-detail-page)
+- [🚀 Version 5: The Engineering Refactor](#-version-5-the-engineering-refactor)
+   - [🔍 Key Architectural Changes in v5](#-key-architectural-changes-in-v5)
+- [🗓️ Changelog](#%EF%B8%8F-changelog)
+- [⚙️ Core Features](#%EF%B8%8F-core-features)
+   - [👤 Dual User Roles & Account Management](#-dual-user-roles-account-management)
+   - [🛡️ Admin (Superuser) Features](#%EF%B8%8F-admin-superuser-features)
+   - [🏠 Renter Features](#-renter-features)
+   - [🔍 Lessee Features & Smart Booking](#-lessee-features-smart-booking)
+- [📐 Allocation Strategy: Best-Fit with Compaction](#-allocation-strategy-best-fit-with-compaction)
+- [🛠️ Tech Stack & Requirements](#%EF%B8%8F-tech-stack-requirements)
+- [📁 Project Structure](#-project-structure)
+- [💡 Core Engineering Rationale](#-core-engineering-rationale)
+   - [High-Level Architecture: Service-Layer Pattern](#high-level-architecture-service-layer-pattern)
+- [☁️ Deployment & DevOps](#%EF%B8%8F-deployment--devops)
+- [💻 How to Run This Project Locally](#-how-to-run-this-project-locally)
+   - [🧩 Test the Admin Verification Workflow](#-test-the-admin-verification-workflow)
+- [🗺️ Future Development (Roadmap)](#%EF%B8%8F-future-development-roadmap)
+- [🧾 License](#-license)
+- [📬 Contact](#-contact)
+
+---
 
 ## ✨ Overview
 
@@ -18,10 +51,17 @@ This repository contains **Version 5** of the application. This version represen
 
 - **Separation of Concerns (SoC)**
 - **High Testability**
+- **Scalable Business Logic**
 
-*Note: Version 1 to 4 were internal prototypes and were not published publicly.*
+## 🚀 Live Demo
 
-## [🚀 View Live Demo](https://project-storage-app-ybvk.onrender.com/user/login)**
+[![View Live Demo](https://img.shields.io/badge/🚀_Launch-Live_Demo-007bff?style=for-the-badge)](https://project-storage-app-ybvk.onrender.com/user/login)
+
+> **Demo Credentials (Try it out):**
+>
+> - **Admin:** `admin` / `demo1234` *(View the verification queues)*
+> - **Renter:** `renter` / `demo1234` *(View space visualization)*
+> - **Lessee:** `lessee` / `demo1234` *(Test the booking algorithm)*
 
 ## 🖼️ Screenshots
 
@@ -45,6 +85,10 @@ This repository contains **Version 5** of the application. This version represen
 
 ![Admin Installation Request Detail Page](assets/admin_installation_request_detail.png)
 
+<!--
+> **[🎥 Watch the 1-Minute Evolution Video](#)** > *A walkthrough of how the architecture evolved from v1 to v5.*
+-->
+
 ---
 
 ## 🚀 Version 5: The Engineering Refactor
@@ -57,7 +101,7 @@ Version 5 builds on existing features (Admin Verification, State Machines) by ap
 | :--- | :--- | :--- | :--- |
 | **Business Logic** | Scattered between `views.py` and `models.py`. | Centralized in dedicated **Service Layers** (`services.py`, e.g., `InstallationRequestService`, `BookingStateService`). | Ensures **Separation of Concerns (SoC)** and to make it **Designed for Testability**. |
 | **Error Handling** | Generic Django exceptions. | **Custom Exceptions** (`SpaceStateException`, `InstallationRequestError`) for precise control. | Provides **precise control** and clear, **domain-specific error semantics** for consumers. |
-| **Configuration** | Hardcoded values within views/models. | **`constants.py`** (Centralized Configuration File). | Allows **easy modification** of pricing/locations without touching core logic (**Open/Closed Principle**). |
+| **Domain Constants** | Hardcoded values within views/models. | **`constants.py`** (Centralized Configuration File). | Allows **easy modification** of pricing/locations without touching core logic (**Open/Closed Principle**). |
 | **Data Modeling** | Single string field for location/address. | **New `Location` Model** with area codes and base prices. | Standardizes pricing logic and supports clearer **data integrity** for geographical definitions. |
 | **Visualization** | Same logic embedded inside different views. | **`SpaceLayoutService`** (Visualization Logic separated from a particular view). | Adheres to **Single Responsibility Principle (SRP)** by not repeating presentation logic. |
 
@@ -308,7 +352,7 @@ The application is deployed on **Render** using a continuous deployment pipeline
 1. **Clone the repository:**
 
     ```sh
-    git clone [https://github.com/AaronDDavis/project_storage.git](https://github.com/AaronDDavis/project_storage.git)
+    git clone https://github.com/AaronDDavis/project_storage.git
     cd project_storage
     ```
 
@@ -406,4 +450,4 @@ Developed by **Aaron Davis**
 
 Email: [aaronddavis001@gmail.com]
 
-LinkedIn: [linkedin.com/in/aaron-daniel-davis]
+LinkedIn: [aaron-daniel-davis](linkedin.com/in/aaron-daniel-davis)
