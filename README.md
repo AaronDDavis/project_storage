@@ -17,22 +17,22 @@
 - [✨ Overview](#-overview)
 - [🚀 Live Demo](#-live-demo)
 - [🖼️ Screenshots](#%EF%B8%8F-screenshots)
-   - [🏠 Lessee Dashboard](#-lessee-dashboard)
-   - [🔍 Lessee Search and Booking Flow](#-lessee-search-and-booking-flow)
-   - [📊 Renter Space Detail & Visualization](#-renter-space-detail--visualization)
-   - [👤 Admin Installation Request Detail Page](#-admin-installation-request-detail-page)
+  - [🏠 Lessee Dashboard](#-lessee-dashboard)
+  - [🔍 Lessee Search and Booking Flow](#-lessee-search-and-booking-flow)
+  - [📊 Renter Space Detail & Visualization](#-renter-space-detail--visualization)
+  - [👤 Admin Installation Request Detail Page](#-admin-installation-request-detail-page)
 - [🚀 Version 5: The Engineering Refactor](#-version-5-the-engineering-refactor)
-   - [🔍 Key Architectural Changes in v5](#-key-architectural-changes-in-v5)
+  - [🔍 Key Architectural Changes in v5](#-key-architectural-changes-in-v5)
 - [🗓️ Changelog](#%EF%B8%8F-changelog)
 - [⚙️ Core Features](#%EF%B8%8F-core-features)
 - [📐 Allocation Strategy: Best-Fit with Compaction](#-allocation-strategy-best-fit-with-compaction)
 - [🛠️ Tech Stack & Requirements](#%EF%B8%8F-tech-stack--requirements)
 - [📁 Project Structure](#-project-structure)
 - [💡 Core Engineering Rationale](#-core-engineering-rationale)
-   - [High-Level Architecture: Service-Layer Pattern](#high-level-architecture-service-layer-pattern)
+  - [High-Level Architecture: Service-Layer Pattern](#high-level-architecture-service-layer-pattern)
 - [☁️ Deployment & DevOps](#%EF%B8%8F-deployment--devops)
 - [💻 How to Run This Project Locally](#-how-to-run-this-project-locally)
-   - [🧩 Test the Admin Verification Workflow](#-test-the-admin-verification-workflow)
+  - [🧩 Test the Admin Verification Workflow](#-test-the-admin-verification-workflow)
 - [🗺️ Future Development (Roadmap)](#%EF%B8%8F-future-development-roadmap)
 - [🧾 License](#-license)
 - [📬 Contact](#-contact)
@@ -164,19 +164,19 @@ Version 5 builds on existing features (Admin Verification, State Machines) by ap
 
 ### 🛡️ For Admins (Operational Workflow)
 
-* **Two-Phase Verification:** Renters cannot create phantom spaces. They submit an `InstallationRequest`.
-* **Admin Queue:** Superusers review requests, visualize the shelf layout, and "Install" the space digitally only after physical verification.
-* **Automated Conversion:** Upon approval, the system atomically generates the `Space`, `Rack`, and `Shelf` database objects.
+- **Two-Phase Verification:** Renters cannot create phantom spaces. They submit an `InstallationRequest`.
+- **Admin Queue:** Superusers review requests, visualize the shelf layout, and "Install" the space digitally only after physical verification.
+- **Automated Conversion:** Upon approval, the system atomically generates the `Space`, `Rack`, and `Shelf` database objects.
 
 ### 🏠 For Renters
 
-* **Space Visualization:** A color-coded, grid-based view of their racks showing real-time occupancy.
-* **Request Lifecycle:** Track status from `Pending` $\rightarrow$ `Approved` $\rightarrow$ `Live`.
+- **Space Visualization:** A color-coded, grid-based view of their racks showing real-time occupancy.
+- **Request Lifecycle:** Track status from `Pending` $\rightarrow$ `Approved` $\rightarrow$ `Live`.
 
 ### 🔍 For Lessees
 
-* **Smart Search:** Filters spaces based on item dimensions (L x W x H) vs. available shelf configurations.
-* **Dynamic Pricing:** Real-time cost calculation based on volume and duration.
+- **Smart Search:** Filters spaces based on item dimensions (L x W x H) vs. available shelf configurations.
+- **Dynamic Pricing:** Real-time cost calculation based on volume and duration.
 
 <details>
 <summary>Click here to view features in detail</summary>
